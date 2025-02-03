@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "673731919236",
+    "project_id": "trello-347c9",
+    "storage_bucket": "trello-347c9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673731919236:android:b560dd1b59069ec199f1d1",
+        "android_client_info": {
+          "package_name": "com.mydigitalschool.nicotrello"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "673731919236-fm5f10o1mdn0cal6nrs0rgr8pcur49dc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mydigitalschool.nicotrello",
+            "certificate_hash": "676d7aa17d9a8965dc75b7fbc09c2c408cc8ad6b"
+          }
+        },
+        {
+          "client_id": "673731919236-niajfltvvifj6551l4fjne4q7pbo0pt3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9JvYPFc4MLoc6bIcMDT78LFigfGkbghk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673731919236-niajfltvvifj6551l4fjne4q7pbo0pt3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
