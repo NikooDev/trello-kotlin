@@ -16,6 +16,6 @@ fun Loader() {
 		modifier = Modifier.fillMaxSize(),
 		contentAlignment = Alignment.Center
 	) {
-		CircularProgressIndicator(color = MaterialTheme.colorScheme.onSecondaryContainer, modifier = Modifier.size(60.dp))
+		CircularProgressIndicator(color = MaterialTheme.colorScheme.onSecondaryContainer, modifier = Modifier.size(40.dp))
 	}
 }

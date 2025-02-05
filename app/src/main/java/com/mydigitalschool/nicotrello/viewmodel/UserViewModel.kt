@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class UserViewModel: ViewModel() {
-	private val userRepository = UserRepository()
+	private val repository = UserRepository()
 	private val _user = MutableStateFlow<UserModel?>(null)
 	val user: StateFlow<UserModel?> = _user.asStateFlow()
 
 	fun observeUserChanges(uid: String) {
-		userRepository.listenToUserChanges(uid) { user ->
+		repository.listenToUserChanges(uid) { user ->
 			Log.d("UserViewModel", "observeUserChanges: $user")
 			_user.value = user
 		}
@@ -24,19 +24,19 @@ class UserViewModel: ViewModel() {
 
 	fun loadUser(uid: String) {
 		viewModelScope.launch {
-			val userData = userRepository.getUser(uid)
+			val userData = repository.getUser(uid)
 			_user.value = userData
 		}
 	}
 
 	fun saveUser(user: UserModel) {
 		viewModelScope.launch {
-			userRepository.saveUser(user)
+			repository.saveUser(user)
 		}
 	}
 
 	override fun onCleared() {
 		super.onCleared()
-		userRepository.removeListener()
+		repository.removeListener()
 	}
 }

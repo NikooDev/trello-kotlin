@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
@@ -69,8 +70,8 @@ fun NavGuest(navController: NavHostController, startDestination: String) {
 									)
 								},
 								actionOnNewLine = true,
-								shape = RoundedCornerShape(30.dp),
-								containerColor = Color(0xFF000000).copy(0.3f),
+								shape = RoundedCornerShape(15.dp),
+								containerColor = MaterialTheme.colorScheme.inverseSurface,
 								contentColor = Color.White
 							)
 						}

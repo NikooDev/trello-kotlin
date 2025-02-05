@@ -129,11 +129,11 @@ fun LoginScreen(navController: NavController, snackbarHostState: SnackbarHostSta
 		Box(
 			modifier = Modifier
 				.fillMaxWidth().padding(top = 10.dp).height(65.dp)
-				.background(Color(0xFF000000).copy(alpha = 0.3f), shape = RoundedCornerShape(30.dp))
+				.background(Color(0xFF000000).copy(alpha = 0.3f), shape = RoundedCornerShape(15.dp))
 				.border(
 					1.dp,
 					color = Color(0xFFFFFFFF).copy(alpha = 0.5f),
-					shape = RoundedCornerShape(30.dp)
+					shape = RoundedCornerShape(15.dp)
 				).padding(horizontal = 5.dp)
 		) {
 			TextField(
@@ -165,11 +165,11 @@ fun LoginScreen(navController: NavController, snackbarHostState: SnackbarHostSta
 		Box(
 			modifier = Modifier
 				.fillMaxWidth().padding(top = 10.dp).height(65.dp)
-				.background(Color(0xFF000000).copy(alpha = 0.3f), shape = RoundedCornerShape(30.dp))
+				.background(Color(0xFF000000).copy(alpha = 0.3f), shape = RoundedCornerShape(15.dp))
 				.border(
 					1.dp,
 					color = Color(0xFFFFFFFF).copy(alpha = 0.5f),
-					shape = RoundedCornerShape(30.dp)
+					shape = RoundedCornerShape(15.dp)
 				).padding(horizontal = 5.dp)
 		) {
 			TextField(
@@ -215,10 +215,11 @@ fun LoginScreen(navController: NavController, snackbarHostState: SnackbarHostSta
 			},
 			modifier = Modifier.fillMaxWidth().height(50.dp).border(
 				1.dp,
-				color = Color(0xFFFFFFFF).copy(alpha = 0.5f),
-				shape = RoundedCornerShape(30.dp)
+				shape = RoundedCornerShape(15.dp),
+				color = Color(0xFFFFFFFF).copy(alpha = 0.5f)
 			),
 			enabled = !isLoading && email.isNotBlank() && password.isNotBlank(),
+			shape = RoundedCornerShape(15.dp),
 			colors = ButtonColors(
 				contentColor = Color.White,
 				containerColor = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -238,9 +239,13 @@ fun LoginScreen(navController: NavController, snackbarHostState: SnackbarHostSta
 			}
 		}
 
-		TextButton(onClick = {
-			navController.navigate(ScreenModel.Signup.route)
-		}) {
+		Spacer(modifier = Modifier.height(10.dp))
+
+		TextButton(
+			onClick = {
+				navController.navigate(ScreenModel.Signup.route)
+			}
+		) {
 			Text(
 				"Pas encore de compte ? Inscrivez-vous",
 				color = Color.White,
