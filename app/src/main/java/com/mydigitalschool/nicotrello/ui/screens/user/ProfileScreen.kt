@@ -24,13 +24,18 @@ import com.mydigitalschool.nicotrello.manager.AuthManager
 import com.mydigitalschool.nicotrello.ui.components.Avatar
 import com.mydigitalschool.nicotrello.ui.components.Loader
 import com.mydigitalschool.nicotrello.utils.cap
+import com.mydigitalschool.nicotrello.viewmodel.TitleViewModel
 import com.mydigitalschool.nicotrello.viewmodel.UserViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController, titleViewModel: TitleViewModel) {
 	val userViewModel: UserViewModel = viewModel()
 	val authManager = AuthManager()
+
+	LaunchedEffect(Unit) {
+		titleViewModel.setTitle("Mon profil")
+	}
 
 	LaunchedEffect (Unit) {
 		val currentUser = authManager.getCurrentUser()

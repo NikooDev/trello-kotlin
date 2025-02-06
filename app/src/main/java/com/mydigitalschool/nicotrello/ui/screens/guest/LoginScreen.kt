@@ -141,8 +141,7 @@ fun LoginScreen(navController: NavController, snackbarHostState: SnackbarHostSta
 				onValueChange = { email = it },
 				label = { Text("Email", fontFamily = bodyFontFamily, fontSize = 16.sp) },
 				keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-				modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
-					.focusRequester(focusRequester),
+				modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).focusRequester(focusRequester),
 				colors = OutlinedTextFieldDefaults.colors(
 					focusedTextColor = Color.White,
 					unfocusedTextColor = Color.White,

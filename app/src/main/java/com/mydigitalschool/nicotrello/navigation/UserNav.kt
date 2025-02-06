@@ -29,7 +29,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -40,6 +39,9 @@ import com.mydigitalschool.nicotrello.ui.screens.user.project.*
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -57,6 +59,15 @@ import com.mydigitalschool.nicotrello.R
 import com.mydigitalschool.nicotrello.manager.AuthManager
 import com.mydigitalschool.nicotrello.viewmodel.AuthViewModel
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mydigitalschool.nicotrello.viewmodel.TitleViewModel
+
+/**
+ * Séparer la TopBar du NavHost
+ * Séparer la Navigation Bottom Tab du NavHost
+ */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -81,15 +92,12 @@ fun NavUser(navController: NavHostController, startDestination: String) {
 		ScreenUserModel.Profile
 	)
 
-	val backStackEntry = navController.currentBackStackEntryAsState()
-	val currentRoute = backStackEntry.value?.destination?.route ?: "Unknown"
+	val backStackEntry by navController.currentBackStackEntryAsState()
+	val currentDestination = backStackEntry?.destination
+	val currentRoute = backStackEntry?.destination?.route ?: ""
 
-	val currentLabel = when (currentRoute) {
-		ScreenUserModel.Projects.route -> ScreenUserModel.Projects.label
-		ScreenUserModel.AddProject.route -> ScreenUserModel.AddProject.label
-		ScreenUserModel.Profile.route -> ScreenUserModel.Profile.label
-		else -> ""
-	}
+	val titleViewModel: TitleViewModel = viewModel()
+	val title by titleViewModel.title.collectAsState()
 
 	Scaffold (
 		snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -100,54 +108,79 @@ fun NavUser(navController: NavHostController, startDestination: String) {
 					shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)
 				)
 			) {
-				AnimatedContent (
-					targetState = currentLabel,
-					transitionSpec = {
-						fadeIn(animationSpec = tween(700)) togetherWith fadeOut(animationSpec = tween(700))
-					},
-					label = ""
-				) { targetState ->
-					TopAppBar(
-						modifier = Modifier.clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)),
-						colors = TopAppBarColors(
-							containerColor = MaterialTheme.colorScheme.onSecondary,
-							titleContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-							scrolledContainerColor = Color.Transparent,
-							navigationIconContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-							actionIconContentColor = MaterialTheme.colorScheme.onSecondaryContainer
-						),
-						title = {
-							Text(targetState, modifier = Modifier.padding(start = 5.dp, bottom = 15.dp), style = TextStyle(
-								fontFamily = displayFontFamily,
-								fontSize = 28.sp
-							))
-						},
-						actions = {
-							AnimatedVisibility (
-								visible = currentRoute == "Profile",
-								enter = fadeIn(animationSpec = tween(700)),
-								exit = fadeOut(animationSpec = tween(700))
+				TopAppBar(
+					modifier = Modifier.clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)),
+					colors = TopAppBarColors(
+						containerColor = MaterialTheme.colorScheme.onSecondary,
+						titleContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+						scrolledContainerColor = Color.Transparent,
+						navigationIconContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+						actionIconContentColor = MaterialTheme.colorScheme.onSecondaryContainer
+					),
+					title = {
+						Row (
+							verticalAlignment = Alignment.CenterVertically,
+							modifier = Modifier.fillMaxWidth()
+						) {
+							AnimatedVisibility(
+								visible = currentRoute.startsWith("project/")
 							) {
-								when (currentRoute) {
-									"Profile" -> {
-										IconButton(
-											modifier = Modifier.padding(bottom = 10.dp, end = 5.dp),
-											onClick = {
-												authViewModel.logout()
-											}
-										) {
-											Icon(
-												painterResource(id = R.drawable.turn_off),
-												modifier = Modifier.size(35.dp),
-												contentDescription = "Déconnexion"
-											)
+								IconButton(
+									modifier = Modifier.padding(top = 3.dp),
+									onClick = {
+										navController.navigate(ScreenUserModel.Projects.route) {
+											popUpTo(ScreenUserModel.Projects.route) { inclusive = true }
 										}
+									}
+								) {
+									Image(
+										painter = painterResource(R.drawable.back_ui),
+										contentDescription = "Back",
+										modifier = Modifier.size(30.dp),
+										colorFilter = ColorFilter.tint(Color.DarkGray)
+									)
+								}
+							}
+							AnimatedContent(
+								targetState = title,
+								transitionSpec = {
+									fadeIn(animationSpec = tween(700)) togetherWith fadeOut(animationSpec = tween(700))
+								},
+								label = ""
+							) { targetState ->
+								Text(
+									targetState,
+									modifier = Modifier.padding(start = if (currentRoute.startsWith("project/")) 5.dp else 0.dp), // Padding conditionnel
+									style = TextStyle(fontFamily = displayFontFamily, fontSize = 28.sp)
+								)
+							}
+						}
+					},
+					actions = {
+						AnimatedVisibility (
+							visible = currentRoute == "Profile",
+							enter = fadeIn(animationSpec = tween(700)),
+							exit = fadeOut(animationSpec = tween(700))
+						) {
+							when (currentRoute) {
+								"Profile" -> {
+									IconButton(
+										modifier = Modifier.padding(bottom = 10.dp, end = 5.dp),
+										onClick = {
+											authViewModel.logout()
+										}
+									) {
+										Icon(
+											painterResource(id = R.drawable.turn_off),
+											modifier = Modifier.size(35.dp),
+											contentDescription = "Déconnexion"
+										)
 									}
 								}
 							}
 						}
-					)
-				}
+					}
+				)
 			}
 		},
 		bottomBar = {
@@ -164,7 +197,6 @@ fun NavUser(navController: NavHostController, startDestination: String) {
 					)
 				}.clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)),
 			) {
-				val currentDestination = backStackEntry.value?.destination
 				items.forEach { screen ->
 					NavigationBarItem(
 						modifier = Modifier.padding(top = 10.dp),
@@ -181,10 +213,10 @@ fun NavUser(navController: NavHostController, startDestination: String) {
 						} ?: false,
 						onClick = {
 							navController.navigate(screen.route) {
-								popUpTo(navController.graph.findStartDestination().id) {
-									saveState = true
+								popUpTo(ScreenUserModel.Projects.route) {
+									inclusive = true
 								}
-								launchSingleTop = true
+								launchSingleTop = false
 								restoreState = true
 							}
 						}
@@ -217,7 +249,9 @@ fun NavUser(navController: NavHostController, startDestination: String) {
 						)
 					}
 				) {
-					ProjectsScreen(navController)
+					ProjectsScreen(navController) {
+						titleViewModel.setTitle("Projets")
+					}
 				}
 
 				composable(
@@ -238,7 +272,31 @@ fun NavUser(navController: NavHostController, startDestination: String) {
 						)
 					}
 				) {
-					AddProjectScreen(navController)
+					AddProjectScreen(navController, titleViewModel, snackbarHostState, coroutineScope)
+				}
+
+				composable(
+					route = "${ScreenUserModel.Project.route}/{projectUID}",
+					enterTransition = {
+						return@composable slideIntoContainer(
+							AnimatedContentTransitionScope.SlideDirection.Start, tween(speedTransition)
+						)
+					},
+					popEnterTransition = {
+						return@composable slideIntoContainer(
+							AnimatedContentTransitionScope.SlideDirection.Start, tween(speedTransition)
+						)
+					},
+					exitTransition = {
+						return@composable slideOutOfContainer(
+							AnimatedContentTransitionScope.SlideDirection.End, tween(speedTransition)
+						)
+					}
+				) { backStackEntry ->
+					val projectUID = backStackEntry.arguments?.getString("projectUID") ?: return@composable
+					ProjectScreen(navController, projectUID) { projectTitle ->
+						titleViewModel.setTitle(projectTitle)
+					}
 				}
 
 				composable(
@@ -259,7 +317,7 @@ fun NavUser(navController: NavHostController, startDestination: String) {
 						)
 					}
 				) {
-					ProfileScreen(navController)
+					ProfileScreen(navController, titleViewModel)
 				}
 			}
 		}

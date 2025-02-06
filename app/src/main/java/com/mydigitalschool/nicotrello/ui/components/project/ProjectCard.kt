@@ -20,12 +20,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mydigitalschool.nicotrello.data.model.ProjectModel
+import com.mydigitalschool.nicotrello.utils.toFormattedString
 
 @Composable
-fun ProjectCard(project: ProjectModel, onClick: () -> Unit) {
+fun ProjectCard(project: ProjectModel, modifier: Modifier = Modifier, onClick: () -> Unit) {
 	Card(
-		modifier = Modifier
-			.fillMaxWidth()
+		modifier = modifier
 			.padding(8.dp).shadow(elevation = 8.dp, shape = RoundedCornerShape(15.dp))
 			.clickable { onClick() },
 		shape = RoundedCornerShape(15.dp),
@@ -53,7 +53,7 @@ fun ProjectCard(project: ProjectModel, onClick: () -> Unit) {
 			) {
 				Text(text = "${project.nbTasks} tâche${if (project.nbTasks > 1) "s" else ""}", color = Color.Gray)
 				Text(" • ", color = Color.Gray)
-				Text(text = "Créé le ${project.created}", color = Color.Gray)
+				Text(text = "Créé le ${project.created?.toFormattedString()}", color = Color.Gray)
 			}
 		}
 	}

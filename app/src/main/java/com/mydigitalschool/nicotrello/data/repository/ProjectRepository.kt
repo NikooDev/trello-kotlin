@@ -33,7 +33,9 @@ class ProjectRepository {
 
 	suspend fun addProject(project: ProjectModel): Boolean {
 		return try {
-			collectionRef.document(project.uid).set(project).await()
+			val documentReference = collectionRef.document()
+			project.uid = documentReference.id
+			documentReference.set(project).await()
 			true
 		} catch (e: Exception) {
 			Log.e("ProjectRepository", "Erreur lors de l'ajout : ${e.message}")
@@ -43,8 +45,10 @@ class ProjectRepository {
 
 	suspend fun updateProject(project: ProjectModel): Boolean {
 		return try {
-			collectionRef.document(project.uid).set(project).await()
-			true
+			project.uid?.let {
+				collectionRef.document(it).set(project).await()
+				true
+			} ?: false
 		} catch (e: Exception) {
 			Log.e("ProjectRepository", "Erreur lors de la mise à jour : ${e.message}")
 			false

@@ -11,5 +11,6 @@ sealed class ScreenModel(val route: String) {
 sealed class ScreenUserModel(val route: String, val label: String, val icon: Int) {
 	data object Projects : ScreenUserModel("projects", "Mes projets", R.drawable.layers)
 	data object AddProject : ScreenUserModel("addproject", "Ajouter un projet", R.drawable.add)
+	data object Project : ScreenUserModel("project", "Projet", R.drawable.layers)
 	data object Profile : ScreenUserModel( "Profile", "Mon profil", R.drawable.account_circle)
 }

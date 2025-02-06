@@ -5,61 +5,54 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import java.util.Date
 
-data class ProjectModel (
+data class ListModel (
 	var uid: String? = null,
 	val title: String = "",
-	val author: String = "",
 	val userUID: String = "",
-	val nbTasks: Int = 0,
-	val nbTasksEnd: Int = 0,
+	val projectUID: String = "",
 	val created: Date? = null
 ){
 	constructor(
 		uid: String,
 		title: String,
-		author: String,
 		userUID: String,
-		nbTasks: Int,
-		nbTasksEnd: Int,
+		projectUID: String,
 		created: Timestamp?
-	) : this(uid, title, author, userUID, nbTasks, nbTasksEnd, created?.toDate())
+	) : this(uid, title, userUID, projectUID, created?.toDate())
 
 	/**
 	 * Companion objet
-	 * Permet de définir la date de création lors de la création d'un projet
+	 * Permet de définir la date de création lors de la création d'une liste
 	 */
 	companion object {
 		fun from(
 			title: String,
-			author: String,
 			userUID: String,
-			nbTasks: Int = 0,
-			nbTasksEnd: Int = 0,
+			projectUID: String,
 			created: Timestamp = Timestamp.now()
-		): ProjectModel {
+		): ListModel {
 			val formattedDate = created.toDate()
-			return ProjectModel(null, title, author, userUID, nbTasks, nbTasksEnd, formattedDate)
+			return ListModel(null, title, userUID, projectUID, formattedDate)
 		}
 	}
 }
+
 
 /**
  * Serialization model
  * Permet de retourner les données de Firestore conforme au model
  */
-fun DocumentSnapshot.toProjectModel(): ProjectModel? {
+fun DocumentSnapshot.toListModel(): ListModel? {
 	try {
 		val uid = id
 		val title = getString("title") ?: ""
-		val author = getString("author") ?: ""
 		val userUID = getString("userUID") ?: ""
-		val nbTasks = getLong("nbTasks")?.toInt() ?: 0
-		val nbTasksEnd = getLong("nbTasksEnd")?.toInt() ?: 0
+		val projectUID = getString("projectUID") ?: ""
 		val createdTimestamp = getTimestamp("created")
 
-		return ProjectModel(uid, title, author, userUID, nbTasks, nbTasksEnd, createdTimestamp)
+		return ListModel(uid, title, userUID, projectUID, createdTimestamp)
 	} catch (e: Exception) {
-		Log.e("DocumentSnapshot", "Error converting to ProjectModel: ${e.message}")
+		Log.e("DocumentSnapshot", "Error converting to ListModel: ${e.message}")
 		return null
 	}
 }

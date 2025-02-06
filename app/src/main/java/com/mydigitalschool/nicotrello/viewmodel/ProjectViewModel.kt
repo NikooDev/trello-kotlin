@@ -1,6 +1,5 @@
 package com.mydigitalschool.nicotrello.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mydigitalschool.nicotrello.data.model.ProjectModel
@@ -20,12 +19,21 @@ class ProjectViewModel : ViewModel() {
 	private val _project = MutableStateFlow<ProjectModel?>(null)
 	val project: StateFlow<ProjectModel?> = _project.asStateFlow()
 
+	private val _isLoading = MutableStateFlow(true)
+	val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
 	private val authManager = AuthManager()
 	private val user = authManager.getCurrentUser()
 
 	fun fetchProjects() {
+		_isLoading.value = true
+
 		viewModelScope.launch {
-			_projects.value = user?.let { repository.getAllProjects(it.uid) } ?: emptyList()
+			try {
+				_projects.value = user?.let { repository.getAllProjects(it.uid) } ?: emptyList()
+			} finally {
+				_isLoading.value = false
+			}
 		}
 	}
 
