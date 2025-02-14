@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -134,21 +135,16 @@ fun TaskScreen(navController: NavHostController, taskUID: String, snackbarHostSt
 				modifier = Modifier.padding(16.dp).fillMaxSize()
 			) {
 				if (it.picture != null) {
-					val painter = rememberAsyncImagePainter(
-						model = ImageRequest.Builder(LocalContext.current)
-							.crossfade(true)
-							.data(it.picture)
-							.build()
-					)
-
-					Image(
-						painter = painter,
+					SubcomposeAsyncImage(
+						model = it.picture,
 						contentDescription = "Image",
 						modifier = Modifier
 							.fillMaxWidth()
 							.clip(RoundedCornerShape(15.dp))
 							.height(250.dp),
-						contentScale = ContentScale.Crop
+						contentScale = ContentScale.Crop,
+						loading = { Loader(false) },
+						error = { Text("Erreur de chargement", color = Color.Red) }
 					)
 					Spacer(modifier = Modifier.height(16.dp))
 				}

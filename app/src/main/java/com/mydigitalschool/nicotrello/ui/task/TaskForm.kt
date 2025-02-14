@@ -46,10 +46,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.rememberAsyncImagePainter
 import com.mydigitalschool.nicotrello.R
 import com.mydigitalschool.nicotrello.core.ui.components.Btn
 import com.mydigitalschool.nicotrello.core.ui.components.Input
+import com.mydigitalschool.nicotrello.core.ui.components.Loader
 import com.mydigitalschool.nicotrello.core.utils.cap
 import com.mydigitalschool.nicotrello.data.model.Priority
 import com.mydigitalschool.nicotrello.data.model.TaskModel
@@ -256,15 +258,23 @@ fun TaskForm(
 						)
 					}
 
-					Image(
-						painter = rememberAsyncImagePainter(taskPicture),
-						contentDescription = "Image Preview",
+					SubcomposeAsyncImage(
+						model = taskPicture,
+						contentDescription = "Image",
 						modifier = Modifier
 							.fillMaxWidth()
 							.clip(RoundedCornerShape(15.dp))
 							.height(250.dp),
-						contentScale = ContentScale.Crop
+						contentScale = ContentScale.Crop,
+						loading = { Loader(false) },
+						error = { Text("Erreur de chargement", color = Color.Red) }
 					)
+				}
+			} else {
+				Box(
+					modifier = Modifier.fillMaxWidth().height(250.dp)
+				) {
+					Loader(false)
 				}
 			}
 			Spacer(modifier = Modifier.height(16.dp))
