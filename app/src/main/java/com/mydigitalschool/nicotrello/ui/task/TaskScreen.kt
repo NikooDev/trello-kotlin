@@ -1,6 +1,5 @@
 package com.mydigitalschool.nicotrello.ui.task
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -34,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -43,9 +41,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil3.compose.SubcomposeAsyncImage
-import coil3.compose.rememberAsyncImagePainter
-import coil3.request.ImageRequest
-import coil3.request.crossfade
 import com.mydigitalschool.nicotrello.core.ui.components.Loader
 import com.mydigitalschool.nicotrello.core.utils.cap
 import com.mydigitalschool.nicotrello.data.model.Priority
@@ -53,6 +48,7 @@ import com.mydigitalschool.nicotrello.ui.theme.ColorScheme
 import com.mydigitalschool.nicotrello.ui.theme.Lato
 import com.mydigitalschool.nicotrello.core.ui.components.Btn
 import com.mydigitalschool.nicotrello.ui.auth.AuthViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -177,7 +173,9 @@ fun TaskScreen(navController: NavHostController, taskUID: String, snackbarHostSt
 				) {
 					TextButton(
 						colors = ButtonDefaults.textButtonColors(
-							containerColor = colors.error
+							containerColor = colors.error,
+							disabledContainerColor = colors.error,
+							disabledContentColor = Color.White
 						),
 						enabled = !deleteLoading,
 						elevation = ButtonDefaults.buttonElevation(3.dp),
@@ -187,6 +185,7 @@ fun TaskScreen(navController: NavHostController, taskUID: String, snackbarHostSt
 								val listUID = task?.listUID
 								listUID?.let {
 									task?.let { safeTask ->
+										delay(500)
 										taskViewModel.deleteTask(safeTask, listUID) { success, message ->
 											if (success && message != null) {
 												navController.popBackStack()

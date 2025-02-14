@@ -62,7 +62,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import coil3.compose.SubcomposeAsyncImage
-import coil3.compose.rememberAsyncImagePainter
 import com.mydigitalschool.nicotrello.R
 import com.mydigitalschool.nicotrello.core.ui.components.Btn
 import com.mydigitalschool.nicotrello.core.ui.components.Input
