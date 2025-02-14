@@ -270,12 +270,6 @@ fun TaskForm(
 						error = { Text("Erreur de chargement", color = Color.Red) }
 					)
 				}
-			} else {
-				Box(
-					modifier = Modifier.fillMaxWidth().height(250.dp)
-				) {
-					Loader(false)
-				}
 			}
 			Spacer(modifier = Modifier.height(16.dp))
 			Row {
