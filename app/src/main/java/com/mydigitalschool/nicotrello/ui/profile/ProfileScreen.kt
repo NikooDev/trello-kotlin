@@ -23,6 +23,8 @@ import com.mydigitalschool.nicotrello.core.ui.components.Avatar
 import com.mydigitalschool.nicotrello.core.ui.components.Loader
 import com.mydigitalschool.nicotrello.core.utils.cap
 import com.mydigitalschool.nicotrello.ui.auth.AuthViewModel
+import com.mydigitalschool.nicotrello.ui.theme.Lato
+import com.mydigitalschool.nicotrello.ui.theme.LocalColors
 
 @Composable
 fun ProfileScreen(onSetTitle: () -> Unit) {
@@ -44,9 +46,7 @@ fun ProfileScreen(onSetTitle: () -> Unit) {
 		Loader(false)
 	} else {
 		Column (
-			modifier = Modifier.fillMaxSize()
-				.background(MaterialTheme.colorScheme.surfaceDim)
-				.padding(20.dp)
+			modifier = Modifier.fillMaxSize().padding(20.dp)
 		) {
 			user?.let {
 				Row(
@@ -61,13 +61,16 @@ fun ProfileScreen(onSetTitle: () -> Unit) {
 							fontSize = 20.sp,
 							fontWeight = FontWeight.SemiBold,
 							overflow = TextOverflow.Ellipsis,
-							maxLines = 1
+							maxLines = 1,
+							fontFamily = Lato,
+							color = LocalColors.current.primaryText
 						)
 						Text(
 							text = it.email,
 							color = Color.DarkGray,
 							overflow = TextOverflow.Ellipsis,
-							maxLines = 1
+							maxLines = 1,
+							fontFamily = Lato
 						)
 					}
 				}

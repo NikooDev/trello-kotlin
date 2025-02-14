@@ -17,12 +17,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mydigitalschool.nicotrello.ui.theme.LocalColors
 
 @Composable
 fun Avatar(
 	name: String,
 	size: Dp = 64.dp,
-	backgroundColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
+	backgroundColor: Color = LocalColors.current.primary,
 	textColor: Color = Color.White
 ) {
 	val initials = name.split(" ")
@@ -44,7 +45,7 @@ fun Avatar(
 			text = initials,
 			color = textColor,
 			fontSize = (size.value / 3).sp,
-			fontWeight = FontWeight.Bold,
+			fontWeight = FontWeight.Bold
 		)
 	}
 }
